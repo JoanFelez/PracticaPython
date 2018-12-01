@@ -21,14 +21,27 @@ def blogs(request):
 def user_posts(request, username):
     try:
         _posts_ids = []
-        _user = User.objects.values('id').filter(username=username)
-        user_posts_list = Blog.objects.values('post').filter(user_id=_user[0].get('id')).order_by('creation_date')
-        for post in user_posts_list:
-            if post.get('post'):
-                _posts_ids.append(post.get('post'))
+        _user = User.objects.get(username=username)
+        user_posts_list = Blog.objects.values('post').filter(user_id=_user.id).order_by('creation_date')
+
+        for _post in user_posts_list:
+            if _post.get('post'):
+                _posts_ids.append(_post.get('post'))
+            elif not _post.get('post') and len(user_posts_list) is 1:
+                return render(request, 'wordplease/posts/no_post.html')
         posts = Post.objects.all().filter(id__in=_posts_ids)
         post_context = {'Posts': posts}
 
         return render(request, 'wordplease/Blogs/user_posts.html', post_context)
     except User.DoesNotExist:
         return HttpResponse('User not found', status=404)
+
+
+def post(request, username, post_id):
+    try:
+        _post = Post.objects.get(id=post_id)
+        post_context = {'Post': _post}
+        return render(request, 'wordplease/posts/post.html', post_context)
+    except Post.DoesNotExist:
+        return HttpResponse('Post not found', status=404)
+

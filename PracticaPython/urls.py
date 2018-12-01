@@ -18,11 +18,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from wordplease.views import home, blogs, user_posts
+from wordplease.views import home, blogs, user_posts, post
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
     path('blogs', blogs),
-    path('blogs/<str:username>', user_posts)
+    path('blogs/<str:username>', user_posts),
+    path('blogs/<str:username>/<int:post_id>', post)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

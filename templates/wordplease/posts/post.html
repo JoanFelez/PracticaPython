@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ Post.title }}</title>
+</head>
+<body>
+    <h1>{{ Post.title }}</h1>
+    <img src="{{ Post.image.url }}" alt="{{ Post.image.name }}" title="{{ Post.image.name }}">
+    <p>{{ Post.introduction }}</p>
+    <p>{{ Post.text }}</p>
+    <p>Published: {{ Post.published_time }}</p>
+    <p> Categories: {% for category in Post.categories.all %}
+        {{ category.name }}
+        {% endfor %}
+    </p>
+</body>
+</html>

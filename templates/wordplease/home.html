@@ -11,11 +11,7 @@
     {% for post in Posts %}
         <img src="{{ post.image.url }}" alt="{{ post.image.name }}" title="{{ post.image.name }}">
         <p> Title: {{ post.title }}</p>
-        <p> Categories: {% for category in post.categories.all %}
-            {{ category.name }}
-            {% endfor %}
-        </p>
-        <p>Published: {{ post.published_time }}</p>
+        <p> {{ post.introduction }}</p>
     {% endfor %}
 </body>
 </html>

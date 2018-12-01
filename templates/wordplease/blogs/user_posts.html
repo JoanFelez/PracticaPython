@@ -5,16 +5,11 @@
     <title>Posts in this Blogs</title>
 </head>
 <body>
-    <h1>Posts in this Blogs</h1>
     <hr>
     {% for post in Posts %}
         <img src="{{ post.image.url }}" alt="{{ post.image.name }}" title="{{ post.image.name }}">
         <p> Title: {{ post.title }}</p>
-        <p> Categories: {% for category in post.categories.all %}
-            {{ category.name }}
-            {% endfor %}
-        </p>
-        <p>Published: {{ post.published_time }}</p>
+        <p> {{ post.introduction }}</p>
     {% endfor %}
 </body>
 </html>
