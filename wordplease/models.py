@@ -29,7 +29,8 @@ class Post(models.Model):
 class Blog(models.Model):
     title = models.CharField(max_length=150)
     creation_date = models.DateField(auto_now_add=True, editable=False)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    post = models.ManyToManyField(Post)
+    published_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, editable=True, on_delete=models.CASCADE)
 
     def __str__(self):
