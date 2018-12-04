@@ -12,6 +12,15 @@ class Category(models.Model):
     def __str__(self):
         return '%s' % self.name
 
+# Blog Model
+class Blog(models.Model):
+    title = models.CharField(max_length=150)
+    creation_date = models.DateField(auto_now_add=True, editable=False)
+    published_time = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(User, editable=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '%s' % self.title
 
 # Post Model
 class Post(models.Model):
@@ -21,18 +30,9 @@ class Post(models.Model):
     image = models.FileField()
     categories = models.ManyToManyField(Category)
     published_time = models.DateTimeField(auto_now_add=True)
+    blog = models.ForeignKey(Blog, editable=True, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return '%s' % self.title
 
 
-# Blog Model
-class Blog(models.Model):
-    title = models.CharField(max_length=150)
-    creation_date = models.DateField(auto_now_add=True, editable=False)
-    post = models.ManyToManyField(Post, blank=True)
-    published_time = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, editable=True, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return '%s' % self.title

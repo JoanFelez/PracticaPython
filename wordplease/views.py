@@ -18,30 +18,42 @@ def blogs(request):
     return render(request, 'wordplease/blogs/home.html', blog_context)
 
 
-def user_posts(request, username):
+def _user_posts(request, username):
     try:
-        _posts_ids = []
         _user = User.objects.get(username=username)
-        user_posts_list = Blog.objects.values('post').filter(pk=_user.id).order_by('creation_date')
+        _blog = Blog.objects.get(user=_user.pk)
+        user_posts_list = list(Post.objects.all().filter(blog_id=_blog.pk).order_by('published_time'))
 
-        for _post in user_posts_list:
-            if _post.get('post'):
-                _posts_ids.append(_post.get('post'))
-            elif not _post.get('post') and len(user_posts_list) is 1:
-                return render(request, 'wordplease/posts/no_post.html')
-        posts = Post.objects.all().filter(pk__in=_posts_ids)
-        post_context = {'Posts': posts}
-
-        return render(request, 'wordplease/Blogs/user_posts.html', post_context)
+        return user_posts_list
     except User.DoesNotExist:
         return HttpResponse('User not found', status=404)
 
+def user_posts(request, username):
+
+        user_posts_list = _user_posts(request, username)
+
+        if type(user_posts_list) is HttpResponse:
+            return user_posts_list
+
+        if len(user_posts_list) is 0:
+                return render(request, 'wordplease/posts/no_post.html')
+
+        post_context = {'Posts': user_posts_list}
+
+        return render(request, 'wordplease/Blogs/user_posts.html', post_context)
+
 
 def post(request, username, post_id):
-    try:
-        _post = Post.objects.get(pk=post_id)
-        post_context = {'Post': _post}
-        return render(request, 'wordplease/posts/post.html', post_context)
-    except Post.DoesNotExist:
-        return HttpResponse('Post not found', status=404)
+
+    _post_list = _user_posts(request, username)
+
+    if type(_post_list) is HttpResponse:
+        return _post_list
+
+    for _post in _post_list:
+        if _post.pk == post_id:
+            post_context = {'Post': _post}
+            return render(request, 'wordplease/posts/post.html', post_context)
+
+    return HttpResponse('Post not found', status=404)
 
