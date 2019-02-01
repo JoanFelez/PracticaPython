@@ -4,7 +4,7 @@ from wordplease.models import Post, Blog, User
 
 
 def home(request):
-    post_list = Post.objects.all().order_by('-published_time')
+    post_list = Post.objects.all().select_related('user').order_by('-published_time')
 
     post_context = {'Posts': post_list}
 
@@ -22,11 +22,12 @@ def _user_posts(request, username):
     try:
         _user = User.objects.get(username=username)
         _blog = Blog.objects.get(user=_user.pk)
-        user_posts_list = list(Post.objects.all().filter(blog_id=_blog.pk).order_by('published_time'))
+        user_posts_list = list(Post.objects.all().select_related('user').filter(blog_id=_blog.pk).order_by('published_time'))
 
         return user_posts_list
     except User.DoesNotExist:
         return HttpResponse('User not found', status=404)
+
 
 def user_posts(request, username):
 

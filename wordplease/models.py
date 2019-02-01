@@ -12,6 +12,7 @@ class Category(models.Model):
     def __str__(self):
         return '%s' % self.name
 
+
 # Blog Model
 class Blog(models.Model):
     title = models.CharField(max_length=150)
@@ -22,6 +23,7 @@ class Blog(models.Model):
     def __str__(self):
         return '%s' % self.title
 
+
 # Post Model
 class Post(models.Model):
     title = models.CharField(max_length=150)
@@ -31,6 +33,7 @@ class Post(models.Model):
     categories = models.ManyToManyField(Category)
     published_time = models.DateTimeField(auto_now_add=True)
     blog = models.ForeignKey(Blog, editable=True, on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return '%s' % self.title

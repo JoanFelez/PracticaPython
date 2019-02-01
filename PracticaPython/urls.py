@@ -22,8 +22,8 @@ from wordplease.views import home, blogs, user_posts, post
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home),
-    path('blogs', blogs),
-    path('blogs/<str:username>', user_posts),
-    path('blogs/<str:username>/<int:post_id>', post)
+    path('', home, name='home'),
+    path('blogs', blogs, name='blogs'),
+    path('blogs/<str:username>', user_posts, name='user_posts'),
+    path('blogs/<str:username>/<int:post_id>', post, name='post_detail')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

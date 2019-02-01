@@ -9,9 +9,11 @@
     <h3>Recent Posts</h3>
     <hr>
     {% for post in Posts %}
-        <img src="{{ post.image.url }}" alt="{{ post.image.name }}" title="{{ post.image.name }}">
-        <p> Title: {{ post.title }}</p>
-        <p> {{ post.introduction }}</p>
+        <a src="{% url 'post_detail' post.user.username post.pk %}">
+            <img src="{{ post.image.url }}" alt="{{ post.image.name }}" title="{{ post.image.name }}">
+            <p> Title: {{ post.title }}</p>
+            <p> {{ post.introduction }}</p>
+        </a>
     {% endfor %}
 </body>
 </html>
